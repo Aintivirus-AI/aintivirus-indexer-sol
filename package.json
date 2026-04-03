@@ -1,0 +1,11 @@
+{
+  "name": "aintivirus-sol-indexer",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter @aintivirus/indexer dev",
+    "lint": "pnpm -r lint",
+    "test": "pnpm --filter @aintivirus/indexer test"
+  }
+}

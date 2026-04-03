@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MixerPool {
+  pool          String   @id
+  mixer         String?
+  asset         String
+  amount        Decimal  @db.Decimal
+  giftCardEnabled Boolean @default(false) @map("gift_card_enabled")
+  latestRoot    String?  @map("latest_root")
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@map("mixer_pools")
+}
+
+model MixerDeposit {
+  id                    BigInt   @id @default(autoincrement())
+  pool                  String
+  asset                 String
+  amount                Decimal  @db.Decimal
+  commitment            String
+  signature             String
+  slot                  BigInt
+  outerInstructionIndex Int      @default(0) @map("outer_instruction_index")
+  innerInstructionIndex Int      @default(-1) @map("inner_instruction_index")
+  depositor             String?
+  txType                String   @map("tx_type")
+  status                String
+  protocolFee           Decimal  @default(0) @map("protocol_fee") @db.Decimal
+  partnerFee            Decimal  @default(0) @map("partner_fee") @db.Decimal
+  /** Wall time of the transaction block (Solana blockTime); null if unknown. */
+  txTime                DateTime? @map("tx_time") @db.Timestamptz(6)
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([pool, commitment])
+  @@unique([signature, outerInstructionIndex, innerInstructionIndex])
+  @@map("mixer_deposits")
+}
+
+model MixerWithdrawal {
+  id                    BigInt   @id @default(autoincrement())
+  mixer                 String
+  asset                 String
+  amount                Decimal  @db.Decimal
+  recipient             String
+  nullifierHash         String   @unique @map("nullifier_hash")
+  fee                   Decimal  @default(0) @db.Decimal
+  relayer               String?
+  signature             String
+  slot                  BigInt
+  outerInstructionIndex Int      @default(0) @map("outer_instruction_index")
+  innerInstructionIndex Int      @default(-1) @map("inner_instruction_index")
+  status                String
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([signature, outerInstructionIndex, innerInstructionIndex])
+  @@map("mixer_withdrawals")
+}
+
+model MixerNullifier {
+  id                    BigInt   @id @default(autoincrement())
+  nullifierHash         String   @unique @map("nullifier_hash")
+  pool                  String?
+  signature             String
+  slot                  BigInt
+  outerInstructionIndex Int      @default(0) @map("outer_instruction_index")
+  innerInstructionIndex Int      @default(-1) @map("inner_instruction_index")
+  status                String
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("mixer_nullifiers")
+}
+
+model StakingRewardsAdded {
+  id                    BigInt   @id @default(autoincrement())
+  signature             String
+  slot                  BigInt
+  outerInstructionIndex Int      @default(0) @map("outer_instruction_index")
+  innerInstructionIndex Int      @default(-1) @map("inner_instruction_index")
+  asset                 String
+  amount                Decimal  @db.Decimal
+  seasonId              BigInt   @map("season_id")
+  status                String
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([signature, outerInstructionIndex, innerInstructionIndex])
+  @@map("staking_rewards_added")
+}
