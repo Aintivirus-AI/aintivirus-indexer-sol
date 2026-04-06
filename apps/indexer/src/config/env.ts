@@ -34,10 +34,10 @@ export function loadEnv(): Env {
 
 /** Default devnet program IDs from Anchor.toml — override via PROGRAM_IDS */
 export const DEFAULT_PROGRAM_IDS = {
-  factory: "Mrp8KFqRyEcKzCsGaEQQkbC1pZnPPLsCxFu8z9bYu6e",
-  mixer: "AnGAZYhnMR9y4Nw6n3X4NAsGEEzNa1uik3WeVAg4r8bw",
-  payment: "4Z4RE9iewyjm8swqCE8k5WZm8w9UMp78zmWQB9qJL1xa",
-  staking: "9QTPsHachE6k1FRuBnZfEW2646VMn7EnYFpdQKR3YRju",
+  factory: "kVt5uNJU4WtC9CxzbkjMu2yXRp8XnRQmJhQJFhEM1xZ",
+  mixer: "7ohbm4D6VYaRzAXezwSdxUydBz7Q1wHwCTQfkhNK3rJu",
+  payment: "9AXguqktj6N7tsrSDSbg9yyt71wj9s1G7r4euYEmSCts",
+  staking: "B2eBxcaiSyXF4TC7w33e7Kmwr5ZPkhF7KWmKQXACWUQC",
 } as const;
 
 export function getProgramIds(env: Env) {
